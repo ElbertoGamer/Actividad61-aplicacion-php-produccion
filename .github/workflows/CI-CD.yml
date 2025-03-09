@@ -17,7 +17,7 @@ jobs:
       
       - name: Build Docker image
         run: |
-          docker build -t my-app:latest .
+          docker build -t elbertogamer/actividad61-aplicacion-crud-php:latest .
   
   push_to_dockerhub:
     needs: build
@@ -31,8 +31,8 @@ jobs:
       
       - name: Push Docker image
         run: |
-          docker tag my-app:latest ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest
+          docker tag elbertogamer/actividad61-aplicacion-crud-php:latest ${{ secrets.DOCKERHUB_USERNAME }}/elbertogamer/actividad61-aplicacion-crud-php:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/elbertogamer/actividad61-aplicacion-crud-php:latest
 
   deploy:
     needs: push_to_dockerhub
@@ -45,7 +45,7 @@ jobs:
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_SSH_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest
-            docker stop my-app || true
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/elbertogamer/actividad61-aplicacion-crud-php:latest
+            docker stop actividad61-aplicacion-crud-php || true
             docker rm my-app || true
-            docker run -d --name my-app -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest
+            docker run -d --name actividad61-aplicacion-crud-php -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/elbertogamer/actividad61-aplicacion-crud-php:latest
